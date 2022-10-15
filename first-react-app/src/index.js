@@ -8,12 +8,13 @@ import reportWebVitals from './reportWebVitals';
 // import Clock from './chapter_04/Clock';
 // import CommentList from './chapter_05/CommentList';
 // import NotificationList from './chapter_06/NotificationList';
-import Accomadate from './chapter_07/Accomodate';
+// import Accomadate from './chapter_07/Accomodate';
+import ConfirmButton from './chapter_08/ConfirmButton';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Accomadate />
+    <ConfirmButton />
   </React.StrictMode>
 );
 
