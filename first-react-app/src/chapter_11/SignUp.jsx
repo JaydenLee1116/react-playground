@@ -13,7 +13,7 @@ function SignUp(props) {
   };
 
   const handleSubmit = (event) => {
-    alert(`이름 ${name} 성별 ${gender}`);
+    alert(`이름 ${name}, 성별 ${gender}`);
     event.preventDefault();
   };
 

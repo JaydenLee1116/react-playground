@@ -4,13 +4,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import Button from './components/Button';
-import Test from './components/Test';
+// import Button from './components/Button';
+// import Test from './components/Test';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Test />
+    <App />
   </React.StrictMode>
 );
 

@@ -4,7 +4,8 @@ import styled from 'styled-components';
 function Button(props) {
   return (
     <Wrapper>
-      <button onClick={props.isClicked}>제이든</button>
+      <button>제이든</button>
+      {props.children}
     </Wrapper>
   );
 }
@@ -12,7 +13,7 @@ function Button(props) {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  color: red;
+  color: tomato;
 `;
 
 export default Button;
