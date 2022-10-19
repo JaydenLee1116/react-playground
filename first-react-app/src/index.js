@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import ProfileCard from './chapter_13/ProfileCard';
 import './index.css';
 // import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -12,12 +13,13 @@ import reportWebVitals from './reportWebVitals';
 // import ConfirmButton from './chapter_08/ConfirmButton';
 // import LandingPage from './chapter_09/LandingPage';
 // import AttendanceBook from './chapter_10/AttendanceBook';
-import SignUp from './chapter_11/SignUp';
+// import SignUp from './chapter_11/SignUp';
+// import Calculator from './chapter_12/Calculator';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <SignUp />
+    <ProfileCard />
   </React.StrictMode>
 );
 
