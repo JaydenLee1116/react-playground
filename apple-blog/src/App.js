@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from 'react';
+import React, { useState } from 'react';
 function App() {
   // 서버에서 가져온 데이터라고 가정하자.
   let [title, setTitle] = useState([
@@ -134,3 +134,19 @@ function Modal({ title, backgroundColor, handleGender, date }) {
 }
 
 export default App;
+
+// class Modal2 extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       name : 'lee',
+//       age : 31
+//     }
+//   }
+//   render() {
+//     return (
+//       <div>{this.state.name}</div>
+//     )
+//   }
+
+// }
