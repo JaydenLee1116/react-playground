@@ -7,9 +7,13 @@ import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
 import Detail from './pages/Detail';
 import About from './pages/About';
 import Event from './pages/Event';
+import axios from 'axios';
 
 function App() {
-  let [shoes] = useState(data);
+  let [shoes, setShoes] = useState(data);
+  let [count, setCount] = useState(0);
+  let [alert, setAlert] = useState(false);
+  let [loading, setLoading] = useState(false);
   let navigate = useNavigate();
 
   return (
@@ -51,6 +55,34 @@ function App() {
                   ))}
                 </div>
               </div>
+              {loading && <p>로딩 중...</p>}
+              <button
+                onClick={() => {
+                  setLoading(true);
+                  axios
+                    .get(
+                      `https://codingapple1.github.io/shop/data${
+                        count + 2
+                      }.json`
+                    )
+                    .then((response) => {
+                      setShoes([...shoes, ...response.data]);
+                      setLoading(false);
+                    })
+                    .catch(() => {
+                      console.log('실패');
+                      setLoading(false);
+                    });
+                  if (count < 2) {
+                    setCount((count) => count + 1);
+                  } else {
+                    setAlert(true);
+                  }
+                }}
+              >
+                버튼
+              </button>
+              {alert && <p>상품이 더 없습니다.</p>}
             </>
           }
         />
