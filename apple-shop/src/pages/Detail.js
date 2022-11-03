@@ -1,6 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { Context1 } from './../App';
 let Button = styled.button`
   background: ${({ color }) => color};
   color: ${({ color }) => (color === 'tomato' ? 'white' : 'black')};
@@ -17,6 +20,7 @@ function Detail({ shoes }) {
   let [alert, setAlert] = useState(true);
   let [money, setMoney] = useState('');
   let [tab, setTab] = useState(null);
+  let [fade2, setFade2] = useState('');
 
   useEffect(() => {
     let timer = setTimeout(() => setAlert(false), 2000);
@@ -29,8 +33,12 @@ function Detail({ shoes }) {
     if (isNaN(money) === true) console.log('숫자가 아닙네다');
   }, [money]);
 
+  useEffect(() => {
+    setFade2('end');
+  }, []);
+
   return (
-    <div className="container">
+    <div className={`container start ${fade2}`}>
       {alert && <div className="alert alert-warning">2초이내 구매시 할인</div>}
       {count}
       <Button color="tomato" onClick={() => setCount((count) => count + 1)}>
@@ -80,20 +88,29 @@ function Detail({ shoes }) {
         ) : tab === 2 ? (
           <div>333</div>
         ) : null} */}
-        <TabContent tab={tab} />
+        <TabContent tab={tab} shoes={shoes} />
       </div>
     </div>
   );
 }
 
 function TabContent({ tab }) {
-  if (tab === 0) {
-    return <div>000</div>;
-  } else if (tab === 1) {
-    return <div>111</div>;
-  } else if (tab === 2) {
-    return <div>222</div>;
-  }
+  let [fade, setFade] = useState('');
+  let { stock } = useContext(Context1);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setFade('end');
+    }, 10);
+    return () => setFade('');
+  }, [tab]);
+
+  return (
+    <div className={`start ${fade}`}>
+      {stock}
+      {[<div>000</div>, <div>111</div>, <div>222</div>][tab]}
+    </div>
+  );
 }
 
 export default Detail;

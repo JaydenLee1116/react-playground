@@ -1,6 +1,6 @@
 import './App.css';
 import { Navbar, Container, Nav } from 'react-bootstrap';
-import { useState } from 'react';
+import { useState, createContext } from 'react';
 import data from './data';
 import Card from './components/Card';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
@@ -9,11 +9,14 @@ import About from './pages/About';
 import Event from './pages/Event';
 import axios from 'axios';
 
+export let Context1 = createContext();
+
 function App() {
   let [shoes, setShoes] = useState(data);
   let [count, setCount] = useState(0);
   let [alert, setAlert] = useState(false);
   let [loading, setLoading] = useState(false);
+  let [stock, setStock] = useState([10, 11, 12]);
   let navigate = useNavigate();
 
   return (
@@ -86,7 +89,14 @@ function App() {
             </>
           }
         />
-        <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
+        <Route
+          path="/detail/:id"
+          element={
+            <Context1.Provider value={{ stock }}>
+              <Detail shoes={shoes} />
+            </Context1.Provider>
+          }
+        />
 
         <Route path="/about" element={<About />}>
           <Route path="member" element={<div>멤버</div>} />
