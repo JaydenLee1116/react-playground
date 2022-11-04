@@ -1,9 +1,13 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { flushSync } from 'react-dom';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Context1 } from './../App';
+
+import cart from './../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateCart } from '../store/itemSlice';
+
 let Button = styled.button`
   background: ${({ color }) => color};
   color: ${({ color }) => (color === 'tomato' ? 'white' : 'black')};
@@ -21,6 +25,9 @@ function Detail({ shoes }) {
   let [money, setMoney] = useState('');
   let [tab, setTab] = useState(null);
   let [fade2, setFade2] = useState('');
+  let state = useSelector((state) => state);
+
+  let dispatch = useDispatch();
 
   useEffect(() => {
     let timer = setTimeout(() => setAlert(false), 2000);
@@ -68,7 +75,21 @@ function Detail({ shoes }) {
           </h4>
           <p>{shoes.find((item) => item.id === Number(id)).content}</p>
           <p>{shoes.find((item) => item.id === Number(id)).price} 원</p>
-          <button className="btn btn-danger">주문하기</button>
+          <button
+            className="btn btn-danger"
+            onClick={() => {
+              let name = shoes.find((item) => item.id === Number(id)).title;
+              let temp = {
+                id: shoes.find((item) => item.id === Number(id)).id,
+                name: name,
+                count: 1,
+              };
+              if (state.cart.filter((item) => item.id === temp.id)[0]) return;
+              dispatch(updateCart(temp));
+            }}
+          >
+            구매하기
+          </button>
         </div>
         <div className="container">
           <Button color={'grey'} onClick={() => setTab(0)}>
