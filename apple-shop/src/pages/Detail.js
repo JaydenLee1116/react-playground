@@ -43,6 +43,11 @@ function Detail({ shoes }) {
   useEffect(() => {
     setFade2('end');
   }, []);
+  // 누가 디티엘 페이지 접속하면 그 페이지에 보이는 상품 id를 가져와서
+  // 로컬스토리이지에 watched 항목 추가하기
+  // useEffect(() => {
+  //   let tempId = shoes.find((item) => item.id === Number(id)).id;
+  // }, []);
 
   return (
     <div className={`container start ${fade2}`}>

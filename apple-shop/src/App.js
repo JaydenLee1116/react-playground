@@ -1,16 +1,20 @@
 import './App.css';
 import { Navbar, Container, Nav } from 'react-bootstrap';
-import { useState, createContext, useEffect } from 'react';
+import { lazy, Suspense, useState, createContext, useEffect } from 'react';
 import data from './data';
 import Card from './components/Card';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
-import Detail from './pages/Detail';
+// import Detail from './pages/Detail';
 import About from './pages/About';
 import Event from './pages/Event';
 import axios from 'axios';
-import Cart from './pages/Cart';
+// import Cart from './pages/Cart';
+import { useQuery } from 'react-query';
 
 export let Context1 = createContext();
+
+const Detail = lazy(() => import('./pages/Detail'));
+const Cart = lazy(() => import('./pages/Cart'));
 
 function App() {
   let [shoes, setShoes] = useState(data);
@@ -20,13 +24,40 @@ function App() {
   let [stock, setStock] = useState([10, 11, 12]);
 
   useEffect(() => {
-    localStorage.setItem('watched', JSON.stringify([]));
+    if (!localStorage.getItem('watched')?.length) {
+      localStorage.setItem('watched', JSON.stringify([]));
+    }
   }, []);
 
   let navigate = useNavigate();
 
+  let result = useQuery(['temp'], () =>
+    axios.get('https://codingapple1.github.io/userdata.json').then((res) => {
+      return res.data;
+    })
+  );
+  let [count2, setCount2] = useState(0);
+  let [age, setAge] = useState(20);
+
+  useEffect(() => {
+    return () => {
+      if (count2 < 3) {
+        setAge(age + 1);
+      }
+    };
+  }, [count2]);
   return (
     <div className="App">
+      <div>
+        <div>안녕하십니까 전 {age}</div>
+        <button
+          onClick={() => {
+            setCount2(count2 + 1);
+          }}
+        >
+          누르면한살먹기
+        </button>
+      </div>
       <Navbar bg="success" variant="dark">
         <Container>
           <Navbar.Brand
@@ -40,6 +71,11 @@ function App() {
             <Nav.Link onClick={() => navigate('/event')}>Event</Nav.Link>
             <Nav.Link onClick={() => navigate('/cart')}>Cart</Nav.Link>
           </Nav>
+          <Nav className="me-auto">
+            {result.isLoading && '로딩중'}
+            {result.error && '에러 발생'}
+            {result.data && result.data.name}
+          </Nav>
         </Container>
       </Navbar>
 
@@ -52,9 +88,16 @@ function App() {
               <aside className="aside">
                 <div>최근 본 상품</div>
                 {JSON.parse(localStorage.getItem('watched'))
-                  .reverse()
+                  ?.reverse()
                   .map((item, i) => (
-                    <div key={i}>{item}</div>
+                    <>
+                      <img
+                        src={`https://codingapple1.github.io/shop/shoes${
+                          i + 1
+                        }.jpg`}
+                      />
+                      <div key={i}>{item}</div>
+                    </>
                   ))}
               </aside>
               <div className="container">
@@ -118,9 +161,11 @@ function App() {
         <Route
           path="/detail/:id"
           element={
-            <Context1.Provider value={{ stock }}>
-              <Detail shoes={shoes} />
-            </Context1.Provider>
+            <Suspense fallback={<div>로딩중</div>}>
+              <Context1.Provider value={{ stock }}>
+                <Detail shoes={shoes} />
+              </Context1.Provider>
+            </Suspense>
           }
         />
 
